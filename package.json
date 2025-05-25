@@ -1,0 +1,23 @@
+{
+  "name": "naive-3d-integration-ts",
+  "version": "0.0.0",
+  "description": "",
+  "homepage": "https://github.com/oikumo/naive-3d-integration-ts#readme",
+  "bugs": {
+    "url": "https://github.com/oikumo/naive-3d-integration-ts/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oikumo/naive-3d-integration-ts.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}
