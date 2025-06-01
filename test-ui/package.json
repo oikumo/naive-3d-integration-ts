@@ -6,7 +6,7 @@
   "author": "",
   "type": "module",
   "scripts": {
-    "dev": "npm i && tsc && vite build && vite ./dist"
+    "dev": "npm i && tsc && vite build && vite"
   },
   "devDependencies": {
     "vite": "^6.3.3",
