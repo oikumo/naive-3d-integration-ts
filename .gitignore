@@ -23,4 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 
-public/module.wasm
+test-ui/dist
+test-ui/node_modules

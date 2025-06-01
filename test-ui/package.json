@@ -1,0 +1,24 @@
+{
+  "name": "ui-debug",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "scripts": {
+    "dev": "npm i && tsc && vite build && vite ./dist"
+  },
+  "devDependencies": {
+    "vite": "^6.3.3",
+    "@types/node": "^22.14.0",
+    "vite-plugin-dts": "^3.0.1",
+    "tsx": "^4.19.3",
+    "typescript": "~5.7.2",
+    "rollup-plugin-copy": "^3.5.0",
+    "ts-node": "^10.9.2",
+    "vite-plugin-static-copy": "^2.3.1",
+    "vite-plugin-top-level-await": "^1.5.0",
+    "vite-plugin-wasm": "^3.1.0",
+    "vite-plugin-wasm-esm": "^1.0.3"
+  }
+}
