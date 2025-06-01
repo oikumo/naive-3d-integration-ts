@@ -1,6 +1,6 @@
 {
   "name": "naive-3d-integration-ts",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "homepage": "https://github.com/oikumo/naive-3d-integration-ts#readme",
   "bugs": {
@@ -12,7 +12,6 @@
   },
   "license": "MIT",
   "author": "oikumo@gmail.com",
-  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
