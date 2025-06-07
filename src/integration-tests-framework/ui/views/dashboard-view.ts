@@ -1,5 +1,5 @@
-import { IDashboardView } from "../controllers/dasboard-controller";
-import { Information } from "../controllers/interface/Information";
+import { IDashboardView } from "../controllers/main-controller/main-controller";
+import { Information } from "../controllers/main-controller/Information";
 import { ModelTestResult } from "../model/test-result";
 import { createSidebar } from "./sidebar";
 import { TestCard, TestCardState, TestInfo } from "./test-card";

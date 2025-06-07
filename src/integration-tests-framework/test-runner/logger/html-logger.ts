@@ -1,11 +1,11 @@
-import { DashboardController } from "../dasboard-controller";
-import { DashboardTestResult } from "../interface/dashboard-test-result";
+import { DashboardTestResult } from "../../ui/controllers/main-controller/dashboard-test-result";
+import { MainController } from "../../ui/controllers/main-controller/main-controller";
 
 export class HtmlLogger {
-    #dashboard: DashboardController;
+    #dashboard: MainController;
     #testResults = new Array<DashboardTestResult>();
 
-    constructor(dashboard: DashboardController){
+    constructor(dashboard: MainController){
         this.#dashboard = dashboard;
     }
 

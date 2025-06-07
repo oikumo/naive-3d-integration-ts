@@ -1,17 +1,17 @@
+
+import { HtmlLogger } from "../../../test-runner/logger/html-logger";
+import { ModelTestResult } from "../../model/test-result";
+import { DashboardView, IDashboardController } from "../../views/dashboard-view";
+import { Information } from "./Information";
+import { DashboardTestResult } from "./dashboard-test-result";
 import { IntegrationTestRunner } from "../../../test-runner/integration-test-runner";
-import { HtmlLogger } from "./logger/html-logger";
-import { ModelTestResult } from "../model/test-result";
-import { DashboardView, IDashboardController } from "../views/dashboard-view";
-import { Information } from "./interface/Information";
-import { DashboardTestResult } from "./interface/dashboard-test-result";
 
 export interface IDashboardView {
 
     updateResults(results: Array<ModelTestResult>) : void;
 }
 
-
-export class DashboardController implements IDashboardController {
+export class MainController implements IDashboardController {
     #view: DashboardView;
     #testRunner: IntegrationTestRunner;
     #logger: HtmlLogger;
@@ -20,6 +20,10 @@ export class DashboardController implements IDashboardController {
         this.#view = new DashboardView(this, information);
         this.#testRunner = testRunner;
         this.#logger = new HtmlLogger(this);
+    }
+
+    async showAsync() {
+        await this.runTests();    
     }
 
     runTests(): void {
