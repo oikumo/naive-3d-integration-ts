@@ -1,7 +1,7 @@
 
 import { HtmlLogger } from "../../../test-runner/logger/html-logger";
 import { ModelTestResult } from "../../model/test-result";
-import { DashboardView, IDashboardController } from "../../views/dashboard-view";
+import { MainView, IMainViewParthner } from "../../views/main-view/main-view";
 import { Information } from "./Information";
 import { DashboardTestResult } from "./dashboard-test-result";
 import { IntegrationTestRunner } from "../../../test-runner/integration-test-runner";
@@ -11,13 +11,13 @@ export interface IDashboardView {
     updateResults(results: Array<ModelTestResult>) : void;
 }
 
-export class MainController implements IDashboardController {
-    #view: DashboardView;
+export class MainController implements IMainViewParthner {
+    #view: MainView;
     #testRunner: IntegrationTestRunner;
     #logger: HtmlLogger;
     
     constructor(information: Information, testRunner: IntegrationTestRunner) {
-        this.#view = new DashboardView(this, information);
+        this.#view = new MainView(this, information);
         this.#testRunner = testRunner;
         this.#logger = new HtmlLogger(this);
     }

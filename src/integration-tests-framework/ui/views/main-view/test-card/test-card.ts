@@ -1,27 +1,11 @@
-export enum TestCardState {
-    NONE = 'none',
-    SUCESS = 'success',
-    FAILED = 'failed',
-    PENDING = 'pending'
-}
-
-export interface TestInfo {
-    status: TestCardState;
-    title: string;
-    duration: string;
-    environment: string;
-    progressWidth: string;
-    details: string;
-}
-
-
+import { TestCardInfo } from "./test-card-info";
 
 export class TestCard {
     #id: string;
-    #config: TestInfo;
+    #config: TestCardInfo;
     #card: HTMLDivElement | null = null;
 
-    constructor(id: string, config: TestInfo) {
+    constructor(id: string, config: TestCardInfo) {
         this.#id = id;
         this.#config = config;
     }
@@ -44,7 +28,7 @@ export class TestCard {
         return this.#card;
     }
 
-    #createTestCard(id: string, config: TestInfo): HTMLDivElement {
+    #createTestCard(id: string, config: TestCardInfo): HTMLDivElement {
         const card = document.createElement('div');
         card.id = id;
         card.className = `test-card status-${config.status}`;
@@ -58,7 +42,7 @@ export class TestCard {
         ['duration', 'environment'].forEach(text => {
             const span = document.createElement('span');
             span.textContent = `${text.charAt(0).toUpperCase() + text.slice(1)}: 
-            ${this.#config[text as keyof Omit<TestInfo, 'status' | 'progressWidth' | 'details'>]}`;
+            ${this.#config[text as keyof Omit<TestCardInfo, 'status' | 'progressWidth' | 'details'>]}`;
             meta.appendChild(span);
         });
 

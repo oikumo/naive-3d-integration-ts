@@ -13,4 +13,4 @@ const dashboard = new MainController(
     new Information('Integration Tests', '0.0.2'), runner
 );
 
-dashboard.runTests();
+dashboard.showAsync();
