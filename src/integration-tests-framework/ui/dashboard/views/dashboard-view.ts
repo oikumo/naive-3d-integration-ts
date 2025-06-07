@@ -1,11 +1,19 @@
+import { IDashboardView } from "../controllers/dasboard-controller";
 import { Information } from "../controllers/interface/Information";
 import { ModelTestResult } from "../model/test-result";
 import { createSidebar } from "./sidebar";
-import { TestCard, TestCardConfig } from "./test-card";
+import { TestCard, TestCardState, TestInfo } from "./test-card";
 import { createTestContainer } from "./test-card-container";
 
 
-export class DashboardView {
+export interface IDashboardController {
+    
+    runTests() : void;
+}
+
+export class DashboardView implements IDashboardView {
+    #controller: IDashboardController;
+
     #information: Information;
     #document: Document;
     #rootElement: HTMLElement;
@@ -14,19 +22,29 @@ export class DashboardView {
     #sidebar: HTMLDivElement | null = null;
     #testContainer: HTMLDivElement | null = null;
  
-    constructor(rootElementName: string = 'app', information: Information){
+    constructor(controller: IDashboardController, information: Information, rootElementId: string | null = null){
+        this.#controller = controller;
+        
         const doc = document;
         if (doc === null) throw new Error();
-        const root = doc.getElementById(rootElementName);
+
+        let root: HTMLElement | null = null;
+        if (rootElementId !== null) {
+            root = doc.getElementById(rootElementId);
+        } else {
+            root = doc.body;
+        }
         if (root === null) throw new Error();
 
+        this.#information = information;
         this.#document = doc;
         this.#rootElement = root;
-        this.#information = information;
 
         this.create();
     }
 
+
+    
     create() {
         this.#header = this.createHeader();
         this.#dashboardGrid = this.createGrid();
@@ -36,19 +54,26 @@ export class DashboardView {
         this.#dashboardGrid.appendChild(this.#sidebar);
         this.#dashboardGrid.appendChild(this.#testContainer);
 
+        const button = this.#document.createElement('button');
+        button.innerText = "Hola";
+
+        button.addEventListener('click', () => {
+            this.#controller.runTests();
+        });
         
         this.#rootElement.append(
+            button,
             this.#header,
             this.#dashboardGrid
         );
     }
 
-    updateTestResults(results: Array<ModelTestResult>) {
+    updateResults(results: Array<ModelTestResult>) {
         const items = new Array<HTMLDivElement>();
 
         for (let i  = 0; i < results.length; i++) {
-            const config: TestCardConfig = {
-                status: results[i].pass ? 'success' : 'failed',
+            const config: TestInfo = {
+                status: results[i].pass ? TestCardState.SUCESS : TestCardState.FAILED,
                 title: results[i].description,
                 duration: '1.2s',
                 environment: 'Chrome 104',
@@ -82,9 +107,8 @@ export class DashboardView {
         return dashboardGrid;
     }
     
-    createTestItem(id: string, config: TestCardConfig) {
+    createTestItem(id: string, config: TestInfo) {
         const testCard = new TestCard('card-' + id, config);
-
         return testCard.create();
     }
 }

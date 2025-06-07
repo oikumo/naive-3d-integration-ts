@@ -1,18 +1,16 @@
 import { IntegrationTestRunner } from '../../src/integration-tests-framework/test-runner/integration-test-runner';
-import { HtmlLogger } from '../../src/integration-tests-framework/ui/logger/html-logger';
 import { DashboardController } from '../../src/integration-tests-framework/ui/dashboard/controllers/dasboard-controller';
 import { Information } from "../../src/integration-tests-framework/ui/dashboard/controllers/interface/Information";
-import { testSample } from './tests/test-sample';
+import { testSampleFail } from './tests/test-sampleFail';
+import { testSamplePass } from './tests/test-samplePass';
 
 const runner = new IntegrationTestRunner([
-    testSample,
-    testSample
+    testSampleFail,
+    testSamplePass
 ]);
 
 const dashboard = new DashboardController(
-    new Information('Integration Tests', '0.0.2') 
+    new Information('Integration Tests', '0.0.2'), runner
 );
 
-runner.runIntegrationTests(new HtmlLogger(dashboard));
-
-
+dashboard.runTests();

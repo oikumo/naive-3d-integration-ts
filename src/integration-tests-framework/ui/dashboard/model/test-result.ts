@@ -1,5 +1,10 @@
+import { TestState } from "./test-state";
+
 export class ModelTestResult {
-    description: string = "";
+    state = TestState.NONE;
+    title = "";
+    description = "";
     messages = new Array<string>();
     pass = false;
 }
+

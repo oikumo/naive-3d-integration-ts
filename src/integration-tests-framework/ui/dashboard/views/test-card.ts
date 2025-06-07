@@ -1,5 +1,12 @@
-export interface TestCardConfig {
-    status: 'success' | 'failed' | 'pending';
+export enum TestCardState {
+    NONE = 'none',
+    SUCESS = 'success',
+    FAILED = 'failed',
+    PENDING = 'pending'
+}
+
+export interface TestInfo {
+    status: TestCardState;
     title: string;
     duration: string;
     environment: string;
@@ -7,12 +14,14 @@ export interface TestCardConfig {
     details: string;
 }
 
+
+
 export class TestCard {
     #id: string;
-    #config: TestCardConfig;
+    #config: TestInfo;
     #card: HTMLDivElement | null = null;
 
-    constructor(id: string, config: TestCardConfig) {
+    constructor(id: string, config: TestInfo) {
         this.#id = id;
         this.#config = config;
     }
@@ -35,7 +44,7 @@ export class TestCard {
         return this.#card;
     }
 
-    #createTestCard(id: string, config: TestCardConfig): HTMLDivElement {
+    #createTestCard(id: string, config: TestInfo): HTMLDivElement {
         const card = document.createElement('div');
         card.id = id;
         card.className = `test-card status-${config.status}`;
@@ -49,7 +58,7 @@ export class TestCard {
         ['duration', 'environment'].forEach(text => {
             const span = document.createElement('span');
             span.textContent = `${text.charAt(0).toUpperCase() + text.slice(1)}: 
-            ${this.#config[text as keyof Omit<TestCardConfig, 'status' | 'progressWidth' | 'details'>]}`;
+            ${this.#config[text as keyof Omit<TestInfo, 'status' | 'progressWidth' | 'details'>]}`;
             meta.appendChild(span);
         });
 
@@ -79,7 +88,9 @@ export class TestCard {
         const statusDiv = document.createElement('div');
         statusDiv.className = `test-status status-${this.#config.status}`;
         const icon = document.createElement('i');
+
         icon.className = 'fas ' + ({
+            none: 'fa-clock',
             success: 'fa-check-circle',
             failed: 'fa-times-circle',
             pending: 'fa-clock'

@@ -1,5 +1,5 @@
-import { DashboardController } from "../dashboard/controllers/dasboard-controller";
-import { DashboardTestResult } from "../dashboard/controllers/interface/DashboardTestResult";
+import { DashboardController } from "../dasboard-controller";
+import { DashboardTestResult } from "../interface/dashboard-test-result";
 
 export class HtmlLogger {
     #dashboard: DashboardController;
@@ -7,6 +7,11 @@ export class HtmlLogger {
 
     constructor(dashboard: DashboardController){
         this.#dashboard = dashboard;
+    }
+
+    clear() {
+        this.#testResults.length = 0;
+        this.#dashboard.updateTestResults(this.#testResults);
     }
 
     newTestResult(description: string) {

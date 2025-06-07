@@ -1,21 +1,30 @@
-import { HtmlLogger } from '../ui/logger/html-logger';
+import { HtmlLogger } from '../ui/dashboard/controllers/logger/html-logger';
 import { IntegrationTestResult } from './integration-test-result';
 
-export type TestFunc = (logger: HtmlLogger) => Promise<void>;
+export type IntegrationTestFunction = (logger: HtmlLogger) => Promise<void>;
 
 export class IntegrationTestRunner {
-    #tests: Array<TestFunc>;
+    #tests: Array<IntegrationTestFunction>;
     #results = new Array<IntegrationTestResult>();
 
     get results() { return this.#results; }
 
-    constructor(tests: Array<TestFunc>) {
+    constructor(tests: Array<IntegrationTestFunction> | null = null) {
+        if (tests !== null) {
+            this.#tests = tests;
+        } else { 
+            this.#tests = new Array<IntegrationTestFunction>();
+        }
+    }
+
+    setTests(tests: Array<IntegrationTestFunction>) {
+        this.#results.length = 0;
         this.#tests = tests;
     }
 
-    async runIntegrationTests(logger: HtmlLogger) {
+    async executeTests(logger: HtmlLogger) {
         this.#results.length = 0;
-
+        logger.clear();
         console.log('tests:', this.#tests);
 
         for (let test of this.#tests) {

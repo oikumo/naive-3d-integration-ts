@@ -1,4 +1,3 @@
-
 export class Information {
     title: string;
     version: string;
