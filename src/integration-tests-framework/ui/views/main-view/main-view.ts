@@ -4,7 +4,9 @@ import { ModelTestResult } from "../../model/test-result";
 import { TestCard } from "./test-card/test-card";
 import { TestCardState } from "./test-card/test-card-state";
 import { TestCardInfo } from "./test-card/test-card-info";
-import { createSidebar } from "./sidebar/sidebar";
+import { Sidebar } from "../widgets/sidebar/sidebar";
+import { SidebarItemClass } from "../widgets/sidebar/sidebar-item-class";
+import { SidebarItem } from "../widgets/sidebar/sidebar-item";
 import { createTestContainer } from "./test-card/test-card-container";
 
 export interface IMainViewParthner {
@@ -47,21 +49,13 @@ export class MainView implements IDashboardView {
     create() {
         this.#header = this.createHeader();
         this.#dashboardGrid = this.createGrid();
-        this.#sidebar = createSidebar();
+        this.#sidebar = this.#createSidebar();
         this.#testContainer = createTestContainer();
 
         this.#dashboardGrid.appendChild(this.#sidebar);
         this.#dashboardGrid.appendChild(this.#testContainer);
 
-        const button = this.#document.createElement('button');
-        button.innerText = "Hola";
-
-        button.addEventListener('click', () => {
-            this.#controller.runTests();
-        });
-        
         this.#rootElement.append(
-            button,
             this.#header,
             this.#dashboardGrid
         );
@@ -109,6 +103,34 @@ export class MainView implements IDashboardView {
     createTestItem(id: string, config: TestCardInfo) {
         const testCard = new TestCard('card-' + id, config);
         return testCard.create();
+    }
+
+
+    #createSidebar() {
+        const play = SidebarItem.create(
+            'Run All Tests',
+            SidebarItemClass.PLAY, 
+            () => this.#controller.runTests());
+
+        const filterResults = SidebarItem.create(
+            'Filter Results',
+            SidebarItemClass.FILTER, 
+            () => this.#controller.runTests());
+
+
+        const stats = SidebarItem.create(
+            'Analytics',
+            SidebarItemClass.ANALYTICS, 
+            () => this.#controller.runTests());
+
+        const settings = SidebarItem.create(
+            'Settings',
+            SidebarItemClass.SETTINGS, 
+            () => this.#controller.runTests());
+
+        return Sidebar.create([
+            play, filterResults, stats, settings
+        ]);
     }
 }
 
