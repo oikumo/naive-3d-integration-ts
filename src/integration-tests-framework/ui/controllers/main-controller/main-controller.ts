@@ -1,13 +1,14 @@
 import { MainView, IMainViewParthner as IMainViewPartner } from "../../views/main-view/main-view";
 import { Information } from "./information";
 import { IntegrationTestRunner } from "../../../test-runner/integration-test-runner";
-import { MainControllerInfo } from "./main-controller-info";
 import { Model } from "../../model/model";
 import { TestRunnerObserver } from "./test-execution-observer";
+import { TestCardInfo } from "../../views/main-view/test-card/test-card-info";
+import { TestCardState } from "../../views/main-view/test-card/test-card-state";
 
 export interface IMainControllerPartner {
 
-    updateResults(results: Array<MainControllerInfo>) : void;
+    updateResults(results: Array<TestCardInfo>) : void;
 }
 
 export class MainController implements IMainViewPartner {
@@ -40,15 +41,15 @@ export class MainController implements IMainViewPartner {
 
     #retrieveResults() {
         const results = Model.retrieveTestExecutionResult();
-        const viewResults = new Array<MainControllerInfo>();
+        const viewResults = new Array<TestCardInfo>();
 
         if (results === null) {
             return viewResults;            
         }
         
         for (let i = 0; i < results.length; i++) {
-            const config: MainControllerInfo = {
-                status: results[i].pass,
+            const config: TestCardInfo = {
+                status: results[i].pass ? TestCardState.SUCESS : TestCardState.FAILED,
                 title: results[i].title,
                 duration: '1.2s',
                 environment: 'Chrome 104',
