@@ -1,7 +1,9 @@
-import { HtmlLogger } from "integration-tests-framework/test-runner/logger/html-logger";
+import { TestLogger } from "integration-tests-framework/test-runner/test-runner-execution";
 
-export async function testSampleFail(_logger: HtmlLogger) {
-    console.log('prueba');
+export async function testSampleFail(logger: TestLogger) {
+    logger.log('ok');
+    logger.log('fail');
+    
 
     throw Error();
     return;
