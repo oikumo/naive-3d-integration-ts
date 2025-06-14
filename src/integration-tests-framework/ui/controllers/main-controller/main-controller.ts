@@ -1,51 +1,64 @@
-
-import { HtmlLogger } from "../../../test-runner/logger/html-logger";
-import { ModelTestResult } from "../../model/test-result";
-import { MainView, IMainViewParthner } from "../../views/main-view/main-view";
-import { Information } from "./Information";
-import { DashboardTestResult } from "./dashboard-test-result";
+import { MainView, IMainViewParthner as IMainViewPartner } from "../../views/main-view/main-view";
+import { Information } from "./information";
 import { IntegrationTestRunner } from "../../../test-runner/integration-test-runner";
+import { Model } from "../../model/model";
+import { TestRunnerObserver } from "./test-execution-observer";
+import { TestCardInfo } from "../../views/main-view/test-card/test-card-info";
+import { TestCardState } from "../../views/main-view/test-card/test-card-state";
 
-export interface IDashboardView {
+export interface IMainControllerPartner {
 
-    updateResults(results: Array<ModelTestResult>) : void;
+    updateResults(results: Array<TestCardInfo>) : void;
 }
 
-export class MainController implements IMainViewParthner {
+export class MainController implements IMainViewPartner {
     #view: MainView;
     #testRunner: IntegrationTestRunner;
-    #logger: HtmlLogger;
+    #observer: TestRunnerObserver;
     
     constructor(information: Information, testRunner: IntegrationTestRunner) {
         this.#view = new MainView(this, information);
         this.#testRunner = testRunner;
-        this.#logger = new HtmlLogger(this);
+        this.#observer = new TestRunnerObserver(this);
     }
 
     async showAsync() {
-        await this.runTests();    
+        await this.runTestsAsync();
     }
 
-    runTests(): void {
-        this.#testRunner.executeTests(this.#logger);
+    runTestsAsync() {
+        const promise = async () => {
+            await this.#testRunner.executeTests(this.#observer);
+            console.log(Model.getCurrentTestInfo());
+            Model.updateCurrentTestInfo();
+        }
+        promise();
     }
 
-    updateTestResults(results: Array<DashboardTestResult>) {
-        const modelResults = Array<ModelTestResult>();
+    updateResults() {
+        this.#view.updateResults(this.#retrieveResults());
+    }
 
-        for (let result of results) {
-            const modelResult = new ModelTestResult();
-            modelResult.description = result.description;
-            modelResult.pass = result.pass;
-            modelResult.messages = result.messages;
-            modelResults.push(modelResult);
+    #retrieveResults() {
+        const results = Model.retrieveTestExecutionResult();
+        const viewResults = new Array<TestCardInfo>();
+
+        if (results === null) {
+            return viewResults;            
+        }
+        
+        for (let i = 0; i < results.length; i++) {
+            const config: TestCardInfo = {
+                status: results[i].pass ? TestCardState.SUCESS : TestCardState.FAILED,
+                title: results[i].title,
+                duration: '1.2s',
+                environment: 'Chrome 104',
+                progressWidth: '100%',
+                details: results[i].messages.join('\n')
+            };
+            viewResults.push(config);
         }
 
-        modelResults.sort((left, _) => {
-            return left.pass ? 1 : -1;
-        });
-
-
-        this.#view.updateResults(modelResults);
+        return viewResults;
     }
 }

@@ -1,7 +1,7 @@
 import { type IntegrationTestFunction, IntegrationTestRunner } from "./integration-tests-framework/test-runner/integration-test-runner";
 import { MainController } from "./integration-tests-framework/ui/controllers/main-controller/main-controller";
-import { HtmlLogger } from "./integration-tests-framework/test-runner/logger/html-logger";
-import { Information } from "./integration-tests-framework/ui/controllers/main-controller/Information";
+import { TestRunnerExecution } from "./integration-tests-framework/test-runner/test-runner-execution";
+import { Information } from "./integration-tests-framework/ui/controllers/main-controller/information";
 
 
 export {
@@ -9,5 +9,5 @@ export {
     IntegrationTestRunner,
     MainController,
     Information,
-    HtmlLogger
+    TestRunnerExecution as HtmlLogger
 };

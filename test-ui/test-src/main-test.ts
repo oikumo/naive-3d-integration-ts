@@ -2,7 +2,7 @@ import { MainController } from '../../src/integration-tests-framework/ui/control
 import { IntegrationTestRunner } from '../../src/integration-tests-framework/test-runner/integration-test-runner';
 import { testSampleFail } from './tests/test-sampleFail';
 import { testSamplePass } from './tests/test-samplePass';
-import { Information } from '../../src/integration-tests-framework/ui/controllers/main-controller/Information';
+import { Information } from '../../src/integration-tests-framework/ui/controllers/main-controller/information';
 
 const runner = new IntegrationTestRunner([
     testSampleFail,
