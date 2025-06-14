@@ -5,7 +5,8 @@ import { TestCardInfo } from "./test-card/test-card-info";
 import { Sidebar } from "../widgets/sidebar/sidebar";
 import { SidebarItemClass } from "../widgets/sidebar/sidebar-item-class";
 import { SidebarItem } from "../widgets/sidebar/sidebar-item";
-import { DOM } from "../common/dom";
+import { DOM } from "../../../html/dom";
+
 
 export interface IMainViewParthner {
     
@@ -33,6 +34,8 @@ export class MainView implements IMainControllerPartner {
         this.#dashboardGrid = DOM.createDiv('dashboard-grid');
         this.#dashboardGrid.appendChild(this.#sidebar);
         this.#dashboardGrid.appendChild(this.#testContainer);
+
+        DOM.setGlobalStyle();
 
         DOM.getRoot().append(
             this.#header,
