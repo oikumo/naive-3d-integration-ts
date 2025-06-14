@@ -5,8 +5,6 @@ import { TestCardInfo } from "./test-card/test-card-info";
 import { Sidebar } from "../widgets/sidebar/sidebar";
 import { SidebarItemClass } from "../widgets/sidebar/sidebar-item-class";
 import { SidebarItem } from "../widgets/sidebar/sidebar-item";
-import { MainControllerInfo } from "../../controllers/main-controller/main-controller-info";
-import { TestCardState } from "./test-card/test-card-state";
 import { DOM } from "../common/dom";
 
 export interface IMainViewParthner {
@@ -42,20 +40,11 @@ export class MainView implements IMainControllerPartner {
         );
     }
 
-    updateResults(results: Array<MainControllerInfo>) {
+    updateResults(results: Array<TestCardInfo>) {
         const items = new Array<HTMLDivElement>();
 
         for (let i  = 0; i < results.length; i++) {
-            const config: TestCardInfo = {
-                status: results[i].status ? TestCardState.SUCESS : TestCardState.FAILED,
-                title: results[i].title,
-                duration: '1.2s',
-                environment: 'Chrome 104',
-                progressWidth: '100%',
-                details: results[i].details
-            };
-
-            const testCard = new TestCard('card-' + i.toString(), config);
+            const testCard = new TestCard('card-' + i.toString(), results[i]);
             items.push(testCard.create());
         }
 
@@ -79,7 +68,6 @@ export class MainView implements IMainControllerPartner {
             'Filter Results',
             SidebarItemClass.FILTER, 
             () => this.#controller.runTestsAsync());
-
 
         const stats = SidebarItem.create(
             'Analytics',
