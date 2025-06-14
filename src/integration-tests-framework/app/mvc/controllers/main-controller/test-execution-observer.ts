@@ -1,5 +1,5 @@
-import { TestExecution, TestExecutionState } from "../../../test-runner/integration-test-result";
-import { ITestRunnerObserver } from "../../../test-runner/test-runner-execution";
+import { TestExecution, TestExecutionState } from "../../../../test-runner/integration-test-result";
+import { ITestRunnerObserver } from "../../../../test-runner/test-runner-execution";
 import { Model } from "../../model/model";
 import { ModelTestResult } from "../../model/test-result";
 import { MainController } from "./main-controller";
@@ -24,7 +24,8 @@ export class TestRunnerObserver implements ITestRunnerObserver {
             modelResults.push(modelResult);
         }
 
-        modelResults.sort((left, _) => {
+        modelResults.sort((left, right) => {
+            if (left.pass === right.pass) return 0;
             return left.pass ? 1 : -1;
         });
 

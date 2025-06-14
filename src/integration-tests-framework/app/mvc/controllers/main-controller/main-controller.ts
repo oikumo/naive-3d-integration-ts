@@ -1,21 +1,20 @@
 import { MainView, IMainViewParthner as IMainViewPartner } from "../../views/main-view/main-view";
 import { Information } from "./information";
-import { IntegrationTestRunner } from "../../../test-runner/integration-test-runner";
+import { IntegrationTestRunner } from "../../../../test-runner/integration-test-runner";
 import { Model } from "../../model/model";
 import { TestRunnerObserver } from "./test-execution-observer";
 import { TestCardInfo } from "../../views/main-view/test-card/test-card-info";
 import { TestCardState } from "../../views/main-view/test-card/test-card-state";
 
 export interface IMainControllerPartner {
-
-    updateResults(results: Array<TestCardInfo>) : void;
+    updateResults(results: Array<TestCardInfo>): void;
 }
 
 export class MainController implements IMainViewPartner {
     #view: MainView;
     #testRunner: IntegrationTestRunner;
     #observer: TestRunnerObserver;
-    
+
     constructor(information: Information, testRunner: IntegrationTestRunner) {
         this.#view = new MainView(this, information);
         this.#testRunner = testRunner;
@@ -26,13 +25,10 @@ export class MainController implements IMainViewPartner {
         await this.runTestsAsync();
     }
 
-    runTestsAsync() {
-        const promise = async () => {
-            await this.#testRunner.executeTests(this.#observer);
-            console.log(Model.getCurrentTestInfo());
-            Model.updateCurrentTestInfo();
-        }
-        promise();
+    async runTestsAsync() {
+        await this.#testRunner.executeTests(this.#observer);
+        console.log(Model.getCurrentTestInfo());
+        Model.updateCurrentTestInfo();
     }
 
     updateResults() {
@@ -41,23 +37,19 @@ export class MainController implements IMainViewPartner {
 
     #retrieveResults() {
         const results = Model.retrieveTestExecutionResult();
-        const viewResults = new Array<TestCardInfo>();
 
-        if (results === null) {
-            return viewResults;            
+        if (!results) {
+            return [];
         }
-        
-        for (let i = 0; i < results.length; i++) {
-            const config: TestCardInfo = {
-                status: results[i].pass ? TestCardState.SUCESS : TestCardState.FAILED,
-                title: results[i].title,
-                duration: '1.2s',
-                environment: 'Chrome 104',
-                progressWidth: '100%',
-                details: results[i].messages.join('\n')
-            };
-            viewResults.push(config);
-        }
+
+        const viewResults: TestCardInfo[] = results.map(result => ({
+            status: result.pass ? TestCardState.SUCCESS : TestCardState.FAILED,
+            title: result.title,
+            duration: '1.2s', // Consider fetching this dynamically
+            environment: 'Chrome 104', // Consider fetching this dynamically
+            progressWidth: '100%',
+            details: result.messages.join('\n')
+        }));
 
         return viewResults;
     }

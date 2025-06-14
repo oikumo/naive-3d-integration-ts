@@ -1,4 +1,7 @@
+import { GlobalStyle } from "./style";
+
 export class DOM {
+
     static getRoot(rootElementId: string | null = null) {
         const doc = document;
         if (doc === null) throw new Error();
@@ -11,7 +14,24 @@ export class DOM {
         }
         if (root === null) throw new Error();
 
+
         return root;
+    }
+
+    static setGlobalStyle() {
+        const customStyle = new GlobalStyle({
+            colors: {
+                background: "#1a1a2e",
+                surface: "#16213e",
+            },
+            spacing: {
+                bodyPadding: "1.5rem",
+            },
+            typography: {
+                fontFamily: "'Roboto', sans-serif",
+            }
+        });
+        customStyle.apply();
     }
 
     static createElement(tagName: string, className?: string): HTMLElement {

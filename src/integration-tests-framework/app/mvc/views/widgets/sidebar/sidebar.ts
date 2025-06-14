@@ -1,4 +1,6 @@
-import { DOM } from "../../common/dom";
+
+import { GlobalStyle } from "../../../../html/style";
+import { DOM } from "../../../../html/dom";
 import { SidebarItem } from "./sidebar-item";
 
 export class Sidebar {
@@ -11,7 +13,7 @@ export class Sidebar {
         const navItems = new Array<HTMLLIElement>();
 
         items.forEach(item => {
-            const navItem = DOM.createNavItem('nav-item');
+            const navItem = DOM.createNavItem(GlobalStyle.CLASS_ID.NavItem);
             navItem.innerHTML = item.styleClass + item.text; 
             navItem.onclick = item.onclick;
             navItems.push(navItem);    
