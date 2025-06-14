@@ -1,6 +1,6 @@
 export enum TestCardState {
     NONE = 'none',
-    SUCESS = 'success',
+    SUCCESS = 'success',
     FAILED = 'failed',
     PENDING = 'pending'
 }

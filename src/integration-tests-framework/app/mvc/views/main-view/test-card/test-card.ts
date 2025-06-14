@@ -1,5 +1,8 @@
-import { DOM } from "../../common/dom";
+import { GlobalStyle } from "../../../../html/style";
+import { DOM } from "../../../../html/dom";
 import { TestCardInfo } from "./test-card-info";
+import { TestCardState } from "./test-card-state";
+
 
 export class TestCard {
     #id: string;
@@ -30,7 +33,14 @@ export class TestCard {
     }
 
     #createTestCard(id: string, config: TestCardInfo): HTMLDivElement {
-        const card = DOM.createDiv(`test-card status-${config.status}`);
+        let classId = GlobalStyle.CLASS_ID.TestCardStatusFailed;
+
+        switch (config.status) {
+            case TestCardState.PENDING: classId = GlobalStyle.CLASS_ID.TestCardStatusPending; break;
+            case TestCardState.SUCCESS: classId = GlobalStyle.CLASS_ID.TestCardStatusSuccess; break;
+        }
+    
+        const card = DOM.createDiv(classId);
         card.id = id;
         return card;
     }
