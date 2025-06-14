@@ -1,3 +1,4 @@
+import { DOM } from "../../common/dom";
 import { TestCardInfo } from "./test-card-info";
 
 export class TestCard {
@@ -29,16 +30,14 @@ export class TestCard {
     }
 
     #createTestCard(id: string, config: TestCardInfo): HTMLDivElement {
-        const card = document.createElement('div');
+        const card = DOM.createDiv(`test-card status-${config.status}`);
         card.id = id;
-        card.className = `test-card status-${config.status}`;
-
         return card;
     }
 
     #createMeta() {
-        const meta = document.createElement('div');
-        meta.className = 'test-meta';
+        const meta = DOM.createDiv('test-meta');
+
         ['duration', 'environment'].forEach(text => {
             const span = document.createElement('span');
             span.textContent = `${text.charAt(0).toUpperCase() + text.slice(1)}: 
@@ -50,18 +49,19 @@ export class TestCard {
     }
 
     #createDetails() {
-        const details = document.createElement('div');
-        details.className = 'test-details';
-        const pre = document.createElement('pre');
+        const details = DOM.createDiv('test-details');
+        const pre = DOM.createElement('pre');
+
         pre.textContent = this.#config.details;
         pre.className = "prueba";
+
         details.appendChild(pre);
 
         return details;
     }
 
     #createTitle() {
-        const title = document.createElement('h3');
+        const title = DOM.createElement('h3');
         title.className = 'test-title';
         title.textContent = this.#config.title;
 
@@ -69,9 +69,9 @@ export class TestCard {
     }
 
     #createStatusIndicator() {
-        const statusDiv = document.createElement('div');
-        statusDiv.className = `test-status status-${this.#config.status}`;
-        const icon = document.createElement('i');
+        const statusDiv = DOM.createDiv(`test-status status-${this.#config.status}`);
+
+        const icon = DOM.createElement('i');
 
         icon.className = 'fas ' + ({
             none: 'fa-clock',
