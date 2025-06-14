@@ -1,4 +1,4 @@
-import { TestLogger } from "integration-tests-framework/test-runner/test-runner-execution";
+import { TestLogger } from "integration-tests-framework/test-runner/test-logger";
 
 export async function testSampleFail(logger: TestLogger) {
     logger.log('ok');

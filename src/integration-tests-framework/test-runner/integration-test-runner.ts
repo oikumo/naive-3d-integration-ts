@@ -1,4 +1,5 @@
-import { TestLogger, ITestRunnerObserver, TestRunnerExecution } from './test-runner-execution';
+import { ITestRunnerObserver, TestRunnerExecution } from './test-runner-execution';
+import { TestLogger } from "./test-logger";
 
 export type IntegrationTestFunction = (logger: TestLogger) => Promise<void>;
 

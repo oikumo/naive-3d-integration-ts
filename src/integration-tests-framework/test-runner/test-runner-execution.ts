@@ -1,21 +1,9 @@
 import { TestExecution, TestExecutionState } from "./integration-test-result";
+import { TestLogger } from "./test-logger";
 
 export interface ITestRunnerObserver {
     
     updateResults(newResults: Array<TestExecution>) : void;
-}
-
-export class TestLogger {
-
-    #runner: TestRunnerExecution;
-
-    constructor(runner: TestRunnerExecution) {
-        this.#runner = runner;
-    }
-
-    log(message: string) {
-        this.#runner.currentTestLog(message);
-    }
 }
 
 export class TestRunnerExecution {
