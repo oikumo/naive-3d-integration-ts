@@ -1,6 +1,7 @@
-import { HtmlLogger } from "integration-tests-framework/test-runner/logger/html-logger";
+import { TestLogger } from "integration-tests-framework/test-runner/test-runner-execution";
 
-export async function testSamplePass(logger: HtmlLogger) {
+export async function testSamplePass(logger: TestLogger) {
     logger.log('pass');
+
     return;
 }

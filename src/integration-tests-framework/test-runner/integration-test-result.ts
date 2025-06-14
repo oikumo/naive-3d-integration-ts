@@ -1,9 +1,18 @@
-export class IntegrationTestResult {
-    result: string;
-    testName: string;
+export enum TestExecutionState {
+    NONE,
+    PASS, 
+    FAIL
+}
 
-    constructor(testName: string, result: string) {
+export class TestExecution {
+    result: TestExecutionState = TestExecutionState.NONE;
+    testName: string = '';
+    description: string = '';
+    messages = new Array<string>();
+    error: string | null = null;
+
+    constructor(testName: string, description = '') {
         this.testName = testName;
-        this.result = result;
+        this.description = description;
     }
 }

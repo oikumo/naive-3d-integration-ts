@@ -1,13 +1,9 @@
-import { HtmlLogger } from './logger/html-logger';
-import { IntegrationTestResult } from './integration-test-result';
+import { TestLogger, ITestRunnerObserver, TestRunnerExecution } from './test-runner-execution';
 
-export type IntegrationTestFunction = (logger: HtmlLogger) => Promise<void>;
+export type IntegrationTestFunction = (logger: TestLogger) => Promise<void>;
 
 export class IntegrationTestRunner {
     #tests: Array<IntegrationTestFunction>;
-    #results = new Array<IntegrationTestResult>();
-
-    get results() { return this.#results; }
 
     constructor(tests: Array<IntegrationTestFunction> | null = null) {
         if (tests !== null) {
@@ -18,34 +14,29 @@ export class IntegrationTestRunner {
     }
 
     setTests(tests: Array<IntegrationTestFunction>) {
-        this.#results.length = 0;
         this.#tests = tests;
     }
 
-    async executeTests(logger: HtmlLogger) {
-        this.#results.length = 0;
-        logger.clear();
-        console.log('tests:', this.#tests);
+    async executeTests(observer: ITestRunnerObserver) {
+        const logger = new TestRunnerExecution();
+        observer.updateResults(logger.executions);
 
         for (let test of this.#tests) {
-            logger.newTestResult(test.name);
-            logger.log(`test: ${test.name} begin`);
+            logger.newExecution(test.name);
+
             try {
-                await test(logger);
-                const result = new IntegrationTestResult(test.name, 'pass');
-                this.#results.push(result);
+                await test(logger.logger);
                 logger.result(true);
-                
 
             } catch(err) {
-                console.log(err);
-                const result = new IntegrationTestResult(test.name, 'fail');
-                this.#results.push(result);
-                logger.result(false);   
-                
+                if (err instanceof Error) { 
+                    logger.result(false, err.message);
+                } else {
+                    logger.result(false);
+                }
             }
-            logger.log(`test: ${test.name} end`);
-            logger.addResult();
+
+            observer.updateResults(logger.executions);
         }
     }
 }

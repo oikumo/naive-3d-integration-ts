@@ -11,7 +11,7 @@ import { DOM } from "../common/dom";
 
 export interface IMainViewParthner {
     
-    runTests() : void;
+    runTestsAsync(): void;
 }
 
 export class MainView implements IMainControllerPartner {
@@ -69,30 +69,32 @@ export class MainView implements IMainControllerPartner {
     }
 
     #createSidebar() {
+
         const play = SidebarItem.create(
             'Run All Tests',
             SidebarItemClass.PLAY, 
-            () => this.#controller.runTests());
+            () => this.#controller.runTestsAsync());
 
         const filterResults = SidebarItem.create(
             'Filter Results',
             SidebarItemClass.FILTER, 
-            () => this.#controller.runTests());
+            () => this.#controller.runTestsAsync());
 
 
         const stats = SidebarItem.create(
             'Analytics',
             SidebarItemClass.ANALYTICS, 
-            () => this.#controller.runTests());
+            () => this.#controller.runTestsAsync());
 
         const settings = SidebarItem.create(
             'Settings',
             SidebarItemClass.SETTINGS, 
-            () => this.#controller.runTests());
+            () => this.#controller.runTestsAsync());
 
         return Sidebar.create([
             play, filterResults, stats, settings
         ]);
+        
     }
 }
 
