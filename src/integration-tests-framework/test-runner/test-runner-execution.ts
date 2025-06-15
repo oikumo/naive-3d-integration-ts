@@ -1,4 +1,4 @@
-import { TestExecution, TestExecutionState } from "./integration-test-result";
+import { TestExecution, TestExecutionState } from "./test-execution";
 import { TestLogger } from "./test-logger";
 
 export interface ITestRunnerObserver {

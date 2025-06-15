@@ -1,5 +1,5 @@
-import { GlobalStyle } from "../../../../html/style";
-import { DOM } from "../../../../html/dom";
+import { GlobalStyle } from "../../../../../html/style";
+import { DOM } from "../../../../../html/dom";
 import { TestCardInfo } from "./test-card-info";
 import { TestCardState } from "./test-card-state";
 

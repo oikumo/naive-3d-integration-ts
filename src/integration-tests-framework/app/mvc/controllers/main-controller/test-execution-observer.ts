@@ -1,4 +1,4 @@
-import { TestExecution, TestExecutionState } from "../../../../test-runner/integration-test-result";
+import { TestExecution, TestExecutionState } from "../../../../test-runner/test-execution";
 import { ITestRunnerObserver } from "../../../../test-runner/test-runner-execution";
 import { Model } from "../../model/model";
 import { ModelTestResult } from "../../model/test-result";

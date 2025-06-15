@@ -1,14 +1,24 @@
-import { MainView, IMainViewParthner as IMainViewPartner } from "../../views/main-view/main-view";
-import { Information } from "./information";
 import { IntegrationTestRunner } from "../../../../test-runner/integration-test-runner";
 import { Model } from "../../model/model";
 import { TestRunnerObserver } from "./test-execution-observer";
-import { TestCardInfo } from "../../views/main-view/test-card/test-card-info";
-import { TestCardState } from "../../views/main-view/test-card/test-card-state";
+import { TestCardInfo } from "../../views/screens/main-view/test-card/test-card-info";
+import { IMainViewPartner, MainView } from "../../views/screens/main-view/main-view";
+import { TestCardState } from "../../views/screens/main-view/test-card/test-card-state";
 
 export interface IMainControllerPartner {
     updateResults(results: Array<TestCardInfo>): void;
 }
+
+export class Information {
+    title: string;
+    version: string;
+
+    constructor(title: string, version: string) {
+        this.title = title;
+        this.version = version;
+    }
+}
+
 
 export class MainController implements IMainViewPartner {
     #view: MainView;

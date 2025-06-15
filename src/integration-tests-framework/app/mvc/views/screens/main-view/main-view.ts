@@ -1,27 +1,26 @@
-import { IMainControllerPartner } from "../../controllers/main-controller/main-controller";
-import { Information } from "../../controllers/main-controller/information";
+import { IMainControllerPartner, Information } from "../../../controllers/main-controller/main-controller";
 import { TestCard } from "./test-card/test-card";
 import { TestCardInfo } from "./test-card/test-card-info";
-import { Sidebar } from "../widgets/sidebar/sidebar";
-import { SidebarItemClass } from "../widgets/sidebar/sidebar-item-class";
-import { SidebarItem } from "../widgets/sidebar/sidebar-item";
-import { DOM } from "../../../html/dom";
+import { SidebarItem } from "../../widgets/sidebar/sidebar-item";
+import { SidebarItemClass } from "../../widgets/sidebar/sidebar-item-class";
+import { Sidebar } from "../../widgets/sidebar/sidebar";
+import { DOM } from "../../../../html/dom";
 
 
-export interface IMainViewParthner {
+export interface IMainViewPartner {
     
     runTestsAsync(): void;
 }
 
 export class MainView implements IMainControllerPartner {
-    #controller: IMainViewParthner;
+    #controller: IMainViewPartner;
     #information: Information;
     #header: HTMLDivElement | null = null;
     #dashboardGrid: HTMLDivElement | null = null;
     #sidebar: HTMLDivElement | null = null;
     #testContainer: HTMLDivElement | null = null;
  
-    constructor(controller: IMainViewParthner, information: Information){
+    constructor(controller: IMainViewPartner, information: Information){
         this.#controller = controller;
         this.#information = information;
         this.create();
