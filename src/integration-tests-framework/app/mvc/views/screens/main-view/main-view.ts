@@ -1,24 +1,22 @@
 import { IMainControllerPartner, Information } from "../../../controllers/main-controller/main-controller";
-import { TestCard } from "./test-card/test-card";
-import { TestCardInfo } from "./test-card/test-card-info";
-import { SidebarItem } from "../../widgets/sidebar/sidebar-item";
-import { SidebarItemClass } from "../../widgets/sidebar/sidebar-item-class";
-import { Sidebar } from "../../widgets/sidebar/sidebar";
+import { SidebarItem } from "../../page/widgets/sidebar/sidebar-item";
+import { SidebarItemClass } from "../../page/widgets/sidebar/sidebar-item-class";
 import { DOM } from "../../../../html/dom";
+import { TestCardInfo } from "../../page/widgets/test-card/test-card-info";
+import { TestCard } from "../../page/widgets/test-card/test-card";
+import { PAGE } from "../../page/page";
 
 
 export interface IMainViewPartner {
     
     runTestsAsync(): void;
+
+    navigateTo(): void;
 }
 
 export class MainView implements IMainControllerPartner {
     #controller: IMainViewPartner;
     #information: Information;
-    #header: HTMLDivElement | null = null;
-    #dashboardGrid: HTMLDivElement | null = null;
-    #sidebar: HTMLDivElement | null = null;
-    #testContainer: HTMLDivElement | null = null;
  
     constructor(controller: IMainViewPartner, information: Information){
         this.#controller = controller;
@@ -26,19 +24,14 @@ export class MainView implements IMainControllerPartner {
         this.create();
     }
 
+    static #TESTS_ID = 'test-container-id';
+
     create() {
-        this.#header = DOM.createHeader(this.#information.title, this.#information.version);
-        this.#sidebar = this.#createSidebar();
-        this.#testContainer = DOM.createDiv('test-container');
-        this.#dashboardGrid = DOM.createDiv('dashboard-grid');
-        this.#dashboardGrid.appendChild(this.#sidebar);
-        this.#dashboardGrid.appendChild(this.#testContainer);
-
-        DOM.setGlobalStyle();
-
-        DOM.getRoot().append(
-            this.#header,
-            this.#dashboardGrid
+        PAGE.init();
+        PAGE.setHeader(this.#information.title, this.#information.version);
+        PAGE.setLayout(
+            this.#createSidebarItems(),
+            DOM.createDivWithId(MainView.#TESTS_ID, 'test-container')
         );
     }
 
@@ -50,41 +43,33 @@ export class MainView implements IMainControllerPartner {
             items.push(testCard.create());
         }
 
-        this.#testContainer?.replaceChildren(...items);
+        const container = DOM.getElementById(MainView.#TESTS_ID);
+
+        if (container) {
+            container.replaceChildren(...items);
         
-        document.querySelectorAll('.test-card').forEach(card => {
-            card.addEventListener('click', () => {
-                card.classList.toggle('expanded');
+            document.querySelectorAll('.test-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('expanded');
+                });
             });
-        });
+        }
     }
 
-    #createSidebar() {
+    #createSidebarItems() {
+        return [
+            SidebarItem.create('Run All Tests', SidebarItemClass.PLAY, 
+                () => this.#controller.runTestsAsync()),
 
-        const play = SidebarItem.create(
-            'Run All Tests',
-            SidebarItemClass.PLAY, 
-            () => this.#controller.runTestsAsync());
-
-        const filterResults = SidebarItem.create(
-            'Filter Results',
-            SidebarItemClass.FILTER, 
-            () => this.#controller.runTestsAsync());
-
-        const stats = SidebarItem.create(
-            'Analytics',
-            SidebarItemClass.ANALYTICS, 
-            () => this.#controller.runTestsAsync());
-
-        const settings = SidebarItem.create(
-            'Settings',
-            SidebarItemClass.SETTINGS, 
-            () => this.#controller.runTestsAsync());
-
-        return Sidebar.create([
-            play, filterResults, stats, settings
-        ]);
-        
+            SidebarItem.create('Interactive', SidebarItemClass.FILTER, 
+                () => this.#controller.navigateTo()), 
+            
+            SidebarItem.create('Clean', SidebarItemClass.ANALYTICS, 
+                () => PAGE.init()),
+            
+            SidebarItem.create('Settings', SidebarItemClass.SETTINGS, 
+                () => this.#controller.runTestsAsync())
+        ]
     }
 }
 

@@ -14,8 +14,39 @@ export class DOM {
         }
         if (root === null) throw new Error();
 
-
         return root;
+    }
+
+    static clean() {
+        this.getRoot().innerHTML = '';
+    }
+
+    static cleanById(id: string) {
+        const found = document.getElementById(id);
+        if (found) {
+            document.body.removeChild(found);
+        }   
+    }
+
+    static getElementById(id: string) {
+        return document.getElementById(id);
+    }
+
+    static readonly #HEADER_ID = 'header-id';
+
+    static setHeader(title: string, subtitle: string = "") {
+        this.cleanById(this.#HEADER_ID);
+
+        const element = DOM.createDivWithId(this.#HEADER_ID, "dashboard-header");
+        element.innerHTML = `<h1>${title}</h1><p>${subtitle}</p></div>`;
+        
+        this.getRoot().appendChild(element);
+    }
+
+    static createHeader(title: string, subtitle: string = "") {
+        const element = DOM.createDiv("dashboard-header");
+        element.innerHTML = `<h1>${title}</h1><p>${subtitle}</p></div>`;
+        return element;
     }
 
     static setGlobalStyle() {
@@ -41,6 +72,13 @@ export class DOM {
         }
         return element;
     }
+
+    static createDivWithId(id: string, className?: string): HTMLDivElement {
+        const element = this.createElement('div', className) as HTMLDivElement;
+        element.id = id;
+        return element;
+    }
+
 
     static createDiv(className?: string): HTMLDivElement {
         return this.createElement('div', className) as HTMLDivElement;
@@ -68,11 +106,5 @@ export class DOM {
             li.className = className;
         }
         return li;
-    }
-
-    static createHeader(title: string, subtitle: string = "") {
-        const element = DOM.createDiv("dashboard-header");
-        element.innerHTML = `<h1>${title}</h1><p>${subtitle}</p></div>`;
-        return element;
     }
 }

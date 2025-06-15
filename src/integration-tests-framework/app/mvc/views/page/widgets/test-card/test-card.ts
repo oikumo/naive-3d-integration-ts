@@ -1,8 +1,7 @@
 import { GlobalStyle } from "../../../../../html/style";
-import { DOM } from "../../../../../html/dom";
 import { TestCardInfo } from "./test-card-info";
 import { TestCardState } from "./test-card-state";
-
+import { DOM } from "../../../../../html/dom";
 
 export class TestCard {
     #id: string;

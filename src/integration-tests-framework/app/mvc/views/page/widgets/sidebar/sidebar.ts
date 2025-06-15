@@ -1,6 +1,6 @@
 
-import { GlobalStyle } from "../../../../html/style";
-import { DOM } from "../../../../html/dom";
+import { GlobalStyle } from "../../../../../html/style";
+import { DOM } from "../../../../../html/dom";
 import { SidebarItem } from "./sidebar-item";
 
 export class Sidebar {
